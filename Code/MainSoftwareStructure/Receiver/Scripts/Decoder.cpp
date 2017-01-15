@@ -21,12 +21,14 @@ string Decoder::decodeMessage(vector<int> messageToDecode) {
     for (int i=0; i < messageSize; i= i+2){
         int firstDigit = messageToDecode[i];
         int secondDigit = messageToDecode[i+1];
+		char letter;
         if (abs(firstDigit) > 7 || abs(secondDigit)> 15){
            Serial.write("Not an hexadecimal digit"); 				// TODO
-            return "?";
+           letter = "?";
         }
-        char letter = (char)(firstDigit*16 + secondDigit);
-
+		else{
+				letter = (char)(firstDigit*16 + secondDigit);
+		}    
         decodingMessage += letter;
     }
     return decodingMessage;

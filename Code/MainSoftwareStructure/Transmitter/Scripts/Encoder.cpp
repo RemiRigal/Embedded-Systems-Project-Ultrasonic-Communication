@@ -21,8 +21,14 @@ vector<int> Encoder::encodeMessage(string messageToEncode) {
 	
     for (int i=0; i < sizeMessage; i++) {
         char letter = messageToEncode[i];
-        encodingMessageHex.push_back(letterChoice[letter/16]);
-        encodingMessageHex.push_back(letterChoice[letter%16]);
+		if (letter > 255) {
+			encodingMessageHex.push_back(3);
+			encodingMessageHex.push_back(15);
+		}
+		else{
+			 encodingMessageHex.push_back(letterChoice[letter/16]);
+			 encodingMessageHex.push_back(letterChoice[letter%16]);
+		}
     }
 	encodingMessageHex.push_back(0);
     encodingMessageHex.push_back(3);
