@@ -7,12 +7,9 @@
 
 class Encoder {
 public:
-    Encoder(std::string message);
+    Encoder();
     ~Encoder();
-    std::vector<int> encodeMessage();
-
-protected:
-    std::string messageToEncode;
+    static std::vector<int> encodeMessage(std::string message);
 };
 
 #endif // ENCODER_H

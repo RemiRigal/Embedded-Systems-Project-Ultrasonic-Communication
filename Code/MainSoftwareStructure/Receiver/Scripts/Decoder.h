@@ -7,12 +7,11 @@
 class Decoder
 {
 public:
-    Decoder(std::vector<int> message);
+    Decoder();
     ~Decoder();
-    std::string decodeMessage();
-
-private:
-    std::vector<int> messageToDecode;
+    static std::string decodeMessage(std::vector<int> message);
+	static bool isStartOfText(vector<int> digits);
+    static bool isEndOfText(vector<int> digits);
 
 };
 
