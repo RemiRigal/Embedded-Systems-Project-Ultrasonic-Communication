@@ -7,6 +7,8 @@ KPATH := miosix-kernel/miosix
 ## Path to config directory (edited by init_project_out_of_git_repo.pl)
 CONFPATH := .
 include $(CONFPATH)/config/Makefile.inc
+## Path to UltraSound (US) sources
+USPATH := MainSoftwareStructure
 
 ##
 ## List here subdirectories which contains makefiles
@@ -17,17 +19,18 @@ SUBDIRS := $(KPATH)
 ## List here your source files (both .s, .c and .cpp)
 ##
 SRC :=                                  \
-main.cpp
+main.cpp $(USPATH)/serial.cpp
 
 ##
 ## List here additional static libraries with relative path
 ##
-LIBS :=
+LIBS :=					\
 
 ##
 ## List here additional include directories (in the form -Iinclude_dir)
 ##
-INCLUDE_DIRS :=
+INCLUDE_DIRS :=				\
+    -I./$(USPATH)
 
 ##############################################################################
 ## You should not need to modify anything below                             ##
