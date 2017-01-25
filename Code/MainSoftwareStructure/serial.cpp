@@ -18,6 +18,9 @@ int Serial::readLine()
 	} else if (c >= 0 && c < 128) {
 	    // ASCII char, append it to buffer
 	    buffer += c;
+	} else {
+	    // Unsupported char
+	    buffer += '_';
 	}
     }
 
