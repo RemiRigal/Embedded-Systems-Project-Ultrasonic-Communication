@@ -10,7 +10,7 @@ int Serial::readLine()
 
     for (unsigned char i=0; i<msg_length; i++)
     {	// read char
-	char c = getchar();
+	unsigned char c = getchar();
 
 	if (c == '\n' || c == '\r')
 	{   // end of line, return # of char read
@@ -19,7 +19,9 @@ int Serial::readLine()
 	    // ASCII char, append it to buffer
 	    buffer += c;
 	} else {
-	    // Unsupported char
+	    // Unsupported char. Skip one char as UTF8 char above 127 are coded with 2*8bits char
+	    // /!\ input must be in UTF8
+	    getchar();
 	    buffer += '_';
 	}
     }
