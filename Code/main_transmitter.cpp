@@ -17,12 +17,12 @@ int main() {
 	for (;;) {
 		serial.write("[I] Waiting for message");
 		int bufferSize = serial.readLine();
+		
 		if (bufferSize >= 0) {
 			string message = serial.getBuffer();
-			serial.write("Received: " + message);
 			vector<int> encodedMessage = Encoder::encodeMessage(message);
 			
-			serial.write("[I] Transmission...");
+			serial.write("[I] Transmission of: " + message);
 			transmitter.transmit(encodedMessage);
 			serial.write("[I] Done.");
 		}

@@ -10,12 +10,15 @@ using namespace miosix;
 
 int main() {
     Serial serial;
+	serial.write("[I] Initializing...");
 	USReceiver receiver;
+	serial.write("[I] Initialized.");
 	
 	for (;;) {
+		serial.write("[I] Waiting for transmission...");
 		vector<int> encodedMessage = receiver.receive();
 		string message = Decoder::decodeMessage(encodedMessage);
-		serial.write("Incoming message: " + message);
+		serial.write("[I] Incoming message: " + message);
 	}
 	return 0;
 }
