@@ -1,10 +1,11 @@
 #include "USReceiver.h"
 #include "Decoder.h"
+#include <cstdio>
 #include <miosix.h>
-#include <std>
 
 using namespace miosix;
 
+typedef Gpio<GPIOH_BASE, 1> receiver;
 
 USReceiver::USReceiver() {
 	receiver::mode(Mode::INPUT);
@@ -31,18 +32,18 @@ std::vector<int> USReceiver::receive() {
 		if (poll == 1) {
 			if (lastPoll == 0) { // 1;0
 				// New square coming
-				squareCount += 1
+				squareCount += 1;
 			}
 		} else {
 			if (lastPoll == 1) { // 0;1
 				// End of square
 			} else { // 0;0
 				// End of character
-				int character = std::round(squareCount / float(100)) - 1;
+				int character = (squareCount / 100) - 1;
 				
 				if (textStarted) {
 					if (lastCharacter != -1) {
-						textEnded = Decoder.isEndOfText(lastCharacter, character);
+						textEnded = Decoder::isEndOfText(lastCharacter, character);
 						if (!textEnded) {
 							message.push_back(lastCharacter);
 							message.push_back(character);
@@ -52,7 +53,7 @@ std::vector<int> USReceiver::receive() {
 						lastCharacter = character;
 					}
 				} else if (lastCharacter != -1) {
-					textStarted = Decoder.isStartOfText(lastCharacter, character);
+					textStarted = Decoder::isStartOfText(lastCharacter, character);
 					if (textStarted) {
 						lastCharacter = -1;
 					}
