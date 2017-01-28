@@ -10,7 +10,7 @@ using namespace miosix;
 
 int main() {
     Serial serial;
-	serial.write("[I] Initializing...");
+	serial.write("[I] Initializing Receiver...");
 	USReceiver receiver;
 	serial.write("[I] Initialized.");
 	
