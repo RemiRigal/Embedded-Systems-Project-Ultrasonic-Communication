@@ -1,5 +1,6 @@
 #include "USTransmitter.h"
 #include <miosix.h>
+#include <std>
 
 using namespace miosix;
 
@@ -12,7 +13,7 @@ USTransmitter::~USTransmitter() {
 
 }
 
-void USTransmitter::transmit(int[] message) {
+void USTransmitter::transmit(std::vector<int> message) {
 	long long tick = getTick();
 	for (int i = 0; i < message.length; i++) {
 		int nbSquaresToTransmit = message[i];

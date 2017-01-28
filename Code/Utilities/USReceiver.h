@@ -1,6 +1,9 @@
 #ifndef USRECEIVER_H
 #define USRECEIVER_H
 
+#include <miosix.h>
+#include <std>
+
 class USReceiver {
 	
 	public:

@@ -1,6 +1,7 @@
 #include "USReceiver.h"
 #include "Decoder.h"
 #include <miosix.h>
+#include <std>
 
 using namespace miosix;
 

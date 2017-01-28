@@ -1,13 +1,16 @@
 #ifndef USTRANSMITTER_H
 #define USTRANSMITTER_H
 
+#include <miosix.h>
+#include <std>
+
 class USTransmitter {
 	
 	public:
 		USTransmitter();
 		~USTransmitter();
 		
-		void transmit(int[] message);
+		void transmit(std::vector<int> message);
 		
 	private:
 		// GPIO pin attached to the transmitter
