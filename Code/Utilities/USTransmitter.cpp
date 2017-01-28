@@ -18,22 +18,21 @@ void USTransmitter::transmit(std::vector<int> message) {
 	for (unsigned int i = 0; i < message.size(); i++) {
 		int nbSquaresToTransmit = message[i];
 		// Generating a square signal
+		//printf("Transmitting: %i\n", nbSquaresToTransmit);
 		generateSquareWave((nbSquaresToTransmit + 1) * SQUARE_MULTIPLIER);
+		
 		// Pause that separates characters
-		Thread::sleepUntil(getTick() + PAUSE_DURATION);
+		//printf("Pause\n");
+		delayMs(PAUSE_DURATION);
 	}
 }
 
-void USTransmitter::generateSquareWave(float nbSquares) {
-	long long tick = getTick();
-	
+void USTransmitter::generateSquareWave(int nbSquares) {
 	for (int i = 0; i < nbSquares; i++) {
         transmitter::high();
-        tick += EMISSION_HALF_PERIOD;
-        Thread::sleepUntil(tick);
+		delayUs(HIGH_EMISSION_HALF_PERIOD);
 		
 		transmitter::low();
-		tick += EMISSION_HALF_PERIOD;
-		Thread::sleepUntil(tick);
+		delayUs(LOW_EMISSION_HALF_PERIOD);
 	}
 }

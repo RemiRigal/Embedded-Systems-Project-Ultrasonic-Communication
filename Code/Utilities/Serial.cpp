@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "serial.h"
+#include "Serial.h"
 
 int Serial::readLine()
 {
@@ -31,7 +31,7 @@ int Serial::readLine()
 
 int Serial::write(string msg) const
 {
-    return printf((buffer + "\n").c_str());
+    return printf((msg + "\n").c_str());
 }
 
 const string Serial::getBuffer() const

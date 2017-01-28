@@ -9,17 +9,22 @@ using namespace std;
 using namespace miosix;
 
 int main() {
-    Serial serial;
+	Serial serial;
+	serial.write("[I] Initializing...");
 	USTransmitter transmitter;
+	serial.write("[I] Initialized.");
 	
 	for (;;) {
+		serial.write("[I] Waiting for message");
 		int bufferSize = serial.readLine();
 		if (bufferSize >= 0) {
 			string message = serial.getBuffer();
+			serial.write("Received: " + message);
 			vector<int> encodedMessage = Encoder::encodeMessage(message);
-			serial.write("Transmission...");
+			
+			serial.write("[I] Transmission...");
 			transmitter.transmit(encodedMessage);
-			serial.write("Done.");
+			serial.write("[I] Done.");
 		}
 	}
 	return 0;

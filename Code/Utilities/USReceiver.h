@@ -16,7 +16,7 @@ class USReceiver {
 		//Gpio<GPIOH_BASE, 1> receiver;
 	
 		const int FREQUENCY = 40000;
-		const int POLLING_RATE = static_cast<int>(168000000 / FREQUENCY);
+		const int POLLING_RATE = 1000000 / FREQUENCY;
 		
 		bool textEnded = false;
 		bool textStarted = false;

@@ -16,12 +16,12 @@ class USTransmitter {
 		// GPIO pin attached to the transmitter
 		//typedef Gpio<GPIOH_BASE, 1> transmitter;
 	
-		const int FREQUENCY = 40000;
-		const int PAUSE_DURATION = static_cast<int>(168000000 * 0.01); // 10ms
-		const int EMISSION_HALF_PERIOD = static_cast<int>(168000000 / (FREQUENCY * 2)); // 12.5µs
+		const unsigned int PAUSE_DURATION = 10; // 10ms
+		const unsigned int HIGH_EMISSION_HALF_PERIOD = 13; // 13µs
+		const unsigned int LOW_EMISSION_HALF_PERIOD = 12; // 12µs
 		const int SQUARE_MULTIPLIER = 100;
 	
-		void generateSquareWave(float duration);
+		void generateSquareWave(int nbSquares);
 };
 
 #endif //USTRANSMITTER_H

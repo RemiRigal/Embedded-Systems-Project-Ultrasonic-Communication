@@ -23,10 +23,8 @@ std::vector<int> USReceiver::receive() {
 	textStarted = false;
 	message.clear();
 	
-	tick = getTick();
 	while (!textEnded) {
-		tick += POLLING_RATE;
-		Thread::sleepUntil(tick);
+		delayUs(POLLING_RATE);
 		
 		int poll = receiver::value();
 		if (poll == 1) {
