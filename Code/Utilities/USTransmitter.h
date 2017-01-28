@@ -14,7 +14,7 @@ class USTransmitter {
 		
 	private:
 		// GPIO pin attached to the transmitter
-		typedef Gpio<GPIOD_BASE, 15> transmitter;
+		typedef Gpio<GPIOH_BASE, 1> transmitter;
 	
 		const int FREQUENCY = 40000;
 		const int PAUSE_DURATION = static_cast<int>(TICK_FREQ * 0.01); // 10ms

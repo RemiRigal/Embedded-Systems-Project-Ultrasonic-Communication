@@ -13,7 +13,7 @@ class USReceiver {
 		std::vector<int> receive();
 		
 	private:
-		typedef Gpio<GPIOD_BASE, 15> receiver;
+		typedef Gpio<GPIOH_BASE, 1> receiver;
 	
 		const int FREQUENCY = 40000;
 		const int POLLING_RATE = static_cast<int>(TICK_FREQ / FREQUENCY);
