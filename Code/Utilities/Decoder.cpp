@@ -7,14 +7,12 @@ using namespace std;
 Decoder::Decoder() {
 }
 
-
 Decoder::~Decoder() {
 }
 
 string Decoder::decodeMessage(vector<int> messageToDecode) {
     int messageSize = messageToDecode.size();
     if (messageSize < 2){
-        Serial.write("Received a too small length message"); 		// TODO
         return "?";
     }
     string decodingMessage;
@@ -23,7 +21,6 @@ string Decoder::decodeMessage(vector<int> messageToDecode) {
         int secondDigit = messageToDecode[i+1];
 		char letter;
         if (abs(firstDigit) > 7 || abs(secondDigit)> 15){
-           Serial.write("Not an hexadecimal digit"); 				// TODO
            letter = "?";
         }
 		else{
@@ -34,22 +31,10 @@ string Decoder::decodeMessage(vector<int> messageToDecode) {
     return decodingMessage;
 }
 
-bool Decoder::isStartOfText(vector<int> digits){
-    if (digits.size() < 2){
-        Serial.write("Received a too small length digits for start"); // TODO
-    }
-    else{
+bool Decoder::isStartOfText(int firstDigit, int secondDigit){
         return (digits[0] == 0 && digits[1] == 2);
-    }
-    return false;
 }
 
-bool Decoder::isEndOfText(vector<int> digits){
-    if (digits.size() < 2){
-        Serial.write("Received a too small length digits for stop"); // TODO
-    }
-    else{
-        return (digits[0] == 0 && digits[1] == 3);
-    }
-    return false;
+bool Decoder::isEndOfText(int firstDigit, int secondDigit){
+        return (firstDigit == 0 && secondDigit == 3);
 }
