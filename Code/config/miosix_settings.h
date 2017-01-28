@@ -34,7 +34,7 @@
 // The PARSING_FROM_IDE is because Netbeans gets confused by this, it is never
 // defined when compiling the code.
 #ifndef PARSING_FROM_IDE
-#error This error is a reminder that you have not edited miosix_settings.h yet.
+//#error This error is a reminder that you have not edited miosix_settings.h yet.
 #endif //PARSING_FROM_IDE
 
 /**
@@ -109,7 +109,7 @@ const unsigned char MAX_OPEN_FILES=8;
 /// This enables the dynamic loader to load elf programs, the extended system
 /// call service and, if the hardware supports it, the MPU to provide memory
 /// isolation of processes
-//#define WITH_PROCESSES
+#define WITH_PROCESSES
 
 #if defined(WITH_PROCESSES) && defined(__NO_EXCEPTIONS)
 #error Processes require C++ exception support
