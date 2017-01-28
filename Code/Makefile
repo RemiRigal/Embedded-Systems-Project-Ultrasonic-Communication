@@ -18,8 +18,11 @@ SUBDIRS := $(KPATH)
 ##
 ## List here your source files (both .s, .c and .cpp)
 ##
-SRC :=                                  \
-main_receiver.cpp $(wildcard $(USPATH)/*.cpp)
+RSRC :=                                  \
+main_receiver.cpp $(USPATH)/Serial.cpp $(USPATH)/Decoder.cpp $(USPATH)/USReceiver.cpp
+
+TSRC :=                                  \
+main_transmitter.cpp $(USPATH)/Serial.cpp $(USPATH)/Encoder.cpp $(USPATH)/USTransmitter.cpp 
 
 ##
 ## List here additional static libraries with relative path
@@ -45,7 +48,9 @@ ECHO := @echo
 endif
 
 ## Replaces both "foo.cpp"-->"foo.o" and "foo.c"-->"foo.o"
-OBJ := $(addsuffix .o, $(basename $(SRC)))
+ROBJ := $(addsuffix .o, $(basename $(RSRC)))
+TOBJ := $(addsuffix .o, $(basename $(TSRC)))
+OBJ := $(ROBJ) $(TOBJ)
 
 ## Includes the miosix base directory for C/C++
 ## Always include CONFPATH first, as it overrides the config file location
@@ -82,7 +87,9 @@ clean-recursive:
 	  clean || exit 1;)
 
 clean-topdir:
-	-rm -f $(OBJ) main_receiver.elf main_receiver.hex main_receiver.bin main_receiver.map $(OBJ:.o=.d)
+	-rm -f $(OBJ) $(OBJ:.o=.d) \
+		main_receiver.elf main_receiver.hex main_receiver.bin main_receiver.map \
+		main_transmitter.elf main_transmitter.hex main_transmitter.bin main_transmitter.map
 
 main_receiver: main_receiver.elf
 	$(ECHO) "[CP  ] main_receiver.hex"
@@ -91,9 +98,9 @@ main_receiver: main_receiver.elf
 	$(Q)$(CP) -O binary main_receiver.elf main_receiver.bin
 	$(Q)$(SZ) main_receiver.elf
 
-main_receiver.elf: $(OBJ) all-recursive
+main_receiver.elf: $(ROBJ) all-recursive
 	$(ECHO) "[LD  ] main_receiver.elf"
-	$(Q)$(CXX) $(LFLAGS) -o main_receiver.elf $(OBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
+	$(Q)$(CXX) $(LFLAGS) -o main_receiver.elf $(ROBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
 
 main_transmitter: main_transmitter.elf
 	$(ECHO) "[CP  ] main_transmitter.hex"
@@ -102,9 +109,9 @@ main_transmitter: main_transmitter.elf
 	$(Q)$(CP) -O binary main_transmitter.elf main_transmitter.bin
 	$(Q)$(SZ) main_transmitter.elf
 
-main_transmitter.elf: $(OBJ) all-recursive
+main_transmitter.elf: $(TOBJ) all-recursive
 	$(ECHO) "[LD  ] main_transmitter.elf"
-	$(Q)$(CXX) $(LFLAGS) -o main_transmitter.elf $(OBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
+	$(Q)$(CXX) $(LFLAGS) -o main_transmitter.elf $(TOBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
 
 %.o: %.s
 %.o: %.s
@@ -121,3 +128,4 @@ main_transmitter.elf: $(OBJ) all-recursive
 
 #pull in dependecy info for existing .o files
 -include $(OBJ:.o=.d)
+
