@@ -8,7 +8,7 @@ KPATH := miosix-kernel/miosix
 CONFPATH := .
 include $(CONFPATH)/config/Makefile.inc
 ## Path to UltraSound (US) sources
-USPATH := MainSoftwareStructure
+USPATH := Utilities
 
 ##
 ## List here subdirectories which contains makefiles
@@ -19,7 +19,7 @@ SUBDIRS := $(KPATH)
 ## List here your source files (both .s, .c and .cpp)
 ##
 SRC :=                                  \
-main.cpp $(USPATH)/serial.cpp
+main_receiver.cpp $(wildcard $(USPATH)/*.cpp)
 
 ##
 ## List here additional static libraries with relative path
@@ -62,7 +62,7 @@ DFLAGS   := -MMD -MP
 LINK_LIBS := $(LIBS) -L$(KPATH) -Wl,--start-group -lmiosix -lstdc++ -lc \
              -lm -lgcc -Wl,--end-group
 
-all: all-recursive main
+all: all-recursive main_receiver main_transmitter
 
 clean: clean-recursive clean-topdir
 
@@ -82,19 +82,31 @@ clean-recursive:
 	  clean || exit 1;)
 
 clean-topdir:
-	-rm -f $(OBJ) main.elf main.hex main.bin main.map $(OBJ:.o=.d)
+	-rm -f $(OBJ) main_receiver.elf main_receiver.hex main_receiver.bin main_receiver.map $(OBJ:.o=.d)
 
-main: main.elf
-	$(ECHO) "[CP  ] main.hex"
-	$(Q)$(CP) -O ihex   main.elf main.hex
-	$(ECHO) "[CP  ] main.bin"
-	$(Q)$(CP) -O binary main.elf main.bin
-	$(Q)$(SZ) main.elf
+main_receiver: main_receiver.elf
+	$(ECHO) "[CP  ] main_receiver.hex"
+	$(Q)$(CP) -O ihex   main_receiver.elf main_receiver.hex
+	$(ECHO) "[CP  ] main_receiver.bin"
+	$(Q)$(CP) -O binary main_receiver.elf main_receiver.bin
+	$(Q)$(SZ) main_receiver.elf
 
-main.elf: $(OBJ) all-recursive
-	$(ECHO) "[LD  ] main.elf"
-	$(Q)$(CXX) $(LFLAGS) -o main.elf $(OBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
+main_receiver.elf: $(OBJ) all-recursive
+	$(ECHO) "[LD  ] main_receiver.elf"
+	$(Q)$(CXX) $(LFLAGS) -o main_receiver.elf $(OBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
 
+main_transmitter: main_transmitter.elf
+	$(ECHO) "[CP  ] main_transmitter.hex"
+	$(Q)$(CP) -O ihex   main_transmitter.elf main_transmitter.hex
+	$(ECHO) "[CP  ] main_transmitter.bin"
+	$(Q)$(CP) -O binary main_transmitter.elf main_transmitter.bin
+	$(Q)$(SZ) main_transmitter.elf
+
+main_transmitter.elf: $(OBJ) all-recursive
+	$(ECHO) "[LD  ] main_transmitter.elf"
+	$(Q)$(CXX) $(LFLAGS) -o main_transmitter.elf $(OBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
+
+%.o: %.s
 %.o: %.s
 	$(ECHO) "[AS  ] $<"
 	$(Q)$(AS)  $(AFLAGS) $< -o $@
