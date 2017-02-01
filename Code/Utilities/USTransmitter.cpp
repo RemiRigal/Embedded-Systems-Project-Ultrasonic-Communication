@@ -4,10 +4,12 @@
 
 using namespace miosix;
 
-typedef Gpio<GPIOH_BASE, 1> transmitter;
+typedef Gpio<GPIOA_BASE, 0> transmitter;
+typedef Gpio<GPIOD_BASE, 15> blueLed;
 
 USTransmitter::USTransmitter() {
 	transmitter::mode(Mode::OUTPUT);
+	blueLed::mode(Mode::OUTPUT);
 }
 
 USTransmitter::~USTransmitter() {
@@ -20,7 +22,7 @@ void USTransmitter::transmit(std::vector<int> message) {
 		// Generating a square signal
 		//printf("Transmitting: %i\n", nbSquaresToTransmit);
 		generateSquareWave((nbSquaresToTransmit + 1) * SQUARE_MULTIPLIER);
-		
+
 		// Pause that separates characters
 		//printf("Pause\n");
 		delayMs(PAUSE_DURATION);
@@ -29,10 +31,12 @@ void USTransmitter::transmit(std::vector<int> message) {
 
 void USTransmitter::generateSquareWave(int nbSquares) {
 	for (int i = 0; i < nbSquares; i++) {
-        transmitter::high();
+		transmitter::high();
+		blueLed::high();
 		delayUs(HIGH_EMISSION_HALF_PERIOD);
-		
+
 		transmitter::low();
+		blueLed::low();
 		delayUs(LOW_EMISSION_HALF_PERIOD);
 	}
 }
