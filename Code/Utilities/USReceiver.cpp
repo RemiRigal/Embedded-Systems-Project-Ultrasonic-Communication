@@ -43,11 +43,11 @@ std::vector<int> USReceiver::receive() {
 			blueLed::low();
 			if (lastPoll == 1) { // 0;1
 				// End of square
-			} else if (squareCount > 50 && zeroCount > 50) { // 0;0
+			} else if (squareCount > HALF_SQUARE_MULTIPLIER && zeroCount > 50) { // 0;0
 				// End of character
 				zeroCount = 0;
-				int character = ((squareCount  + 50) / 100) - 1;
-				printf("%i\n", character);
+				int character = ((squareCount  + HALF_SQUARE_MULTIPLIER) / SQUARE_MULTIPLIER) - 1;
+				printf("Character: %i | Count: %i\n", character, squareCount);
 				if (textStarted) {
 					if (lastCharacter != -1) {
 						textEnded = Decoder::isEndOfText(lastCharacter, character);
@@ -68,7 +68,7 @@ std::vector<int> USReceiver::receive() {
 					lastCharacter = character;
 				}
 				squareCount = 0;
-			} else if (squareCount > 50) {
+			} else if (squareCount > HALF_SQUARE_MULTIPLIER) {
 				zeroCount++;
 			}
 		}
