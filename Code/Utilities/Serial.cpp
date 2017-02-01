@@ -7,26 +7,26 @@ int Serial::readLine()
 	return -1;
 
     unsigned char i;
-    buffer = "";
+    buffer.clear();	
 
-    for (i=0; i<msg_length; i++)
-    {	// read char
-	unsigned char c = getchar();
+    for (i=0; i<msg_length; i++) {
+		// read char
+		unsigned char c = getchar();
 
-	if (c == '\n' || c == '\r')
-	{   // end of line, return # of char read
-	    return i;
-	} 
-	else if (c >= 0 && c < 128) 
-	{   // ASCII char, append it to buffer
-	    buffer += c;
-	} 
-	else 
-	{   // Unsupported char. Skip one char as UTF8 char above 127 are coded with 2*8bits char
-	    // /!\ input must be in UTF8
-	    getchar();
-	    buffer += '_';
-	}
+		if (c == '\n' || c == '\r')
+		{   // end of line, return nb of char read
+			return i;
+		} 
+		else if (c >= 0 && c < 128) 
+		{   // ASCII char, append it to buffer
+			buffer += c;
+		} 
+		else 
+		{   // Unsupported char. Skip one char as UTF8 char above 127 are coded with 2*8bits char
+			// /!\ input must be in UTF8
+			getchar();
+			buffer += '?';
+		}
     }
     printf("\n");
 

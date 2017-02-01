@@ -5,11 +5,12 @@
 #include <vector>
 
 
-class Encoder {
-public:
-    Encoder();
-    ~Encoder();
-    static std::vector<int> encodeMessage(std::string message);
+class Encoder
+{
+	public:
+		Encoder();
+		~Encoder();
+		static std::vector<int> encodeMessage(std::string message);
 };
 
 #endif // ENCODER_H

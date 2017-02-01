@@ -20,11 +20,9 @@ void USTransmitter::transmit(std::vector<int> message) {
 	for (unsigned int i = 0; i < message.size(); i++) {
 		int nbSquaresToTransmit = message[i];
 		// Generating a square signal
-		//printf("Transmitting: %i\n", nbSquaresToTransmit);
 		generateSquareWave((nbSquaresToTransmit + 1) * SQUARE_MULTIPLIER);
 
 		// Pause that separates characters
-		//printf("Pause\n");
 		delayMs(PAUSE_DURATION);
 	}
 }
