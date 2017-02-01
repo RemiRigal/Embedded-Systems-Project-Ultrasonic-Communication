@@ -22,7 +22,10 @@ RSRC :=                                  \
 main_receiver.cpp $(USPATH)/Serial.cpp $(USPATH)/Decoder.cpp $(USPATH)/USReceiver.cpp
 
 TSRC :=                                  \
-main_transmitter.cpp $(USPATH)/Serial.cpp $(USPATH)/Encoder.cpp $(USPATH)/USTransmitter.cpp 
+main_transmitter.cpp $(USPATH)/Serial.cpp $(USPATH)/Encoder.cpp $(USPATH)/USTransmitter.cpp
+
+TESTSRC :=                                  \
+main_test.cpp $(USPATH)/Serial.cpp $(USPATH)/Encoder.cpp $(USPATH)/USTransmitter.cpp $(USPATH)/Decoder.cpp $(USPATH)/USReceiver.cpp
 
 ##
 ## List here additional static libraries with relative path
@@ -50,7 +53,8 @@ endif
 ## Replaces both "foo.cpp"-->"foo.o" and "foo.c"-->"foo.o"
 ROBJ := $(addsuffix .o, $(basename $(RSRC)))
 TOBJ := $(addsuffix .o, $(basename $(TSRC)))
-OBJ := $(ROBJ) $(TOBJ)
+TESTOBJ := $(addsuffix .o, $(basename $(TESTSRC)))
+OBJ := $(ROBJ) $(TOBJ) $(TESTOBJ)
 
 ## Includes the miosix base directory for C/C++
 ## Always include CONFPATH first, as it overrides the config file location
@@ -67,9 +71,12 @@ DFLAGS   := -MMD -MP
 LINK_LIBS := $(LIBS) -L$(KPATH) -Wl,--start-group -lmiosix -lstdc++ -lc \
              -lm -lgcc -Wl,--end-group
 
+# build everything for transmission, test excepted 
 all: all-recursive main_receiver main_transmitter
 
 clean: clean-recursive clean-topdir
+
+test: all-recursive main_test
 
 program:
 	$(PROGRAM_CMDLINE)
@@ -89,7 +96,8 @@ clean-recursive:
 clean-topdir:
 	-rm -f $(OBJ) $(OBJ:.o=.d) \
 		main_receiver.elf main_receiver.hex main_receiver.bin main_receiver.map \
-		main_transmitter.elf main_transmitter.hex main_transmitter.bin main_transmitter.map
+		main_transmitter.elf main_transmitter.hex main_transmitter.bin main_transmitter.map \
+		main_test.elf main_test.hex main_test.bin main_test.map
 
 main_receiver: main_receiver.elf
 	$(ECHO) "[CP  ] main_receiver.hex"
@@ -113,6 +121,17 @@ main_transmitter.elf: $(TOBJ) all-recursive
 	$(ECHO) "[LD  ] main_transmitter.elf"
 	$(Q)$(CXX) $(LFLAGS) -o main_transmitter.elf $(TOBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
 
+main_test: main_test.elf
+	$(ECHO) "[CP  ] main_test.hex"
+	$(Q)$(CP) -O ihex   main_test.elf main_test.hex
+	$(ECHO) "[CP  ] main_test.bin"
+	$(Q)$(CP) -O binary main_test.elf main_test.bin
+	$(Q)$(SZ) main_test.elf
+
+main_test.elf: $(TESTOBJ) all-recursive
+	$(ECHO) "[LD  ] main_test.elf"
+	$(Q)$(CXX) $(LFLAGS) -o main_test.elf $(TESTOBJ) $(KPATH)/$(BOOT_FILE) $(LINK_LIBS)
+	
 %.o: %.s
 %.o: %.s
 	$(ECHO) "[AS  ] $<"

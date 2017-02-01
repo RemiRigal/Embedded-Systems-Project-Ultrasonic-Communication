@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <miosix.h>
 
+#define nbLastPolls 5
+
 class USReceiver {
 	
 	public:
@@ -11,18 +13,22 @@ class USReceiver {
 		~USReceiver();
 		
 		std::vector<int> receive();
+		std::vector<int> receive(unsigned int nbDigits);
 		
 	private:
-		//Gpio<GPIOH_BASE, 1> receiver;
+		int receiveDigit();
 	
 		const int FREQUENCY = 40000;
-		const int POLLING_RATE = 1000000 / FREQUENCY;
+		const int POLLING_RATE = 1000000 / (2 * FREQUENCY);
+		const int SQUARE_MULTIPLIER = 200;
+		const int HALF_SQUARE_MULTIPLIER = SQUARE_MULTIPLIER / 2;
+		const int TIMEOUT = 5;
 		
 		bool textEnded = false;
 		bool textStarted = false;
 		std::vector<int> message;
-		
-		long long tick = 0;
 };
+
+class TimeOutException {};
 
 #endif //USRECEIVER_H

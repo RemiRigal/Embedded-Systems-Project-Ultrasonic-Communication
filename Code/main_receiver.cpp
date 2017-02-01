@@ -17,8 +17,10 @@ int main() {
 	for (;;) {
 		serial.write("[I] Waiting for transmission...");
 		vector<int> encodedMessage = receiver.receive();
-		string message = Decoder::decodeMessage(encodedMessage);
-		serial.write("[I] Incoming message: " + message);
+		if (encodedMessage.size() > 0) {
+			string message = Decoder::decodeMessage(encodedMessage);
+			serial.write("[I] Incoming message: " + message);
+		}
 	}
 	return 0;
 }
