@@ -1,0 +1,17 @@
+Component Lists:
+
+1x Ultrasonic receiver (MA40S4R)
+1x Ultrasonic transmitter (MA40S4S)
+
+1x 1mH inductor
+
+Resistors:
+	- 1x 10kOhm
+	- 1x 1.5kOhm
+	- 1x 75kOhm
+	- 2x 1kOhm
+	- 1x 680Ohm
+
+2x NPN Transistors (BC547)
+	
+2x Operational amplifier (TL074CN)
