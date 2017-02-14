@@ -76,6 +76,10 @@ all: all-recursive main_receiver main_transmitter
 
 clean: clean-recursive clean-topdir
 
+receiver: all-recursive main_receiver
+
+transmitter: all-recursive main_transmitter
+
 test: all-recursive main_test
 
 program:
@@ -95,9 +99,9 @@ clean-recursive:
 
 clean-topdir:
 	-rm -f $(OBJ) $(OBJ:.o=.d) \
-		main_receiver.elf main_receiver.hex main_receiver.bin main_receiver.map \
-		main_transmitter.elf main_transmitter.hex main_transmitter.bin main_transmitter.map \
-		main_test.elf main_test.hex main_test.bin main_test.map
+		main_receiver.elf main_receiver.hex main_receiver.bin \
+		main_transmitter.elf main_transmitter.hex main_transmitter.bin \
+		main_test.elf main_test.hex main_test.bin main.map
 
 main_receiver: main_receiver.elf
 	$(ECHO) "[CP  ] main_receiver.hex"
